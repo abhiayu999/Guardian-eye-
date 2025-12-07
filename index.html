@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Baby Abhi – Health Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --bg: #eef5ff;
+  --bg-card: #ffffff;
+  --bg-chip: #e8f4ff;
+  --text-main: #1f2933;
+  --text-muted: #6b7280;
+  --accent: #f97373;
+  --accent-soft: #ffe4e6;
+  --danger: #ef4444;
+  --success: #10b981;
+  --border-subtle: #e5e7eb;
+}
+
+body.dark {
+  --bg: #020617;
+  --bg-card: #020617;
+  --bg-chip: #020617;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --accent: #fb7185;
+  --accent-soft: #111827;
+  --border-subtle: #111827;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, var(--bg) 0, #f9fafb 45%, #e5e7eb 100%);
+  font-family: "Inter", sans-serif;
+  color: var(--text-main);
+}
+
+/* main container */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 14px 40px;
+}
+
+/* top bar */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f97373, #fb923c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-text span:first-child {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.brand-text span:last-child {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chip {
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--bg-chip);
+  border: 1px solid var(--border-subtle);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #9ca3af;
+}
+
+.chip-dot.ok {
+  background: #22c55e;
+}
+
+.toggle-btn {
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+/* profile card */
+
+.profile-card {
+  background: var(--bg-card);
+  border-radius: 18px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.09);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.profile-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f97373, #fb7185);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+.baby-info span:first-child {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.baby-info span:last-child {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* vitals row */
+
+.vitals-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.card {
+  background: var(--bg-card);
+  border-radius: 18px;
+  padding: 16px 18px 18px;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.07);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.card-status {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.card-main {
+  margin-top: 10px;
+}
+
+.card-value {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.card-sub {
+  font-size: 11px;
+  margin-top: 3px;
+  color: var(--text-muted);
+}
+
+/* main grid */
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 2.1fr 1.3fr;
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* slim ECG heart chart */
+
+.chart-card {
+  background: var(--bg-card);
+  border-radius: 18px;
+  padding: 10px 16px 12px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.chart-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+#hrChart {
+  height: 70px !important;
+}
+
+/* summary cards */
+
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.summary-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.camera-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.camera-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.summary-value {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.summary-sub {
+  font-size: 11px;
+  margin-top: 2px;
+  color: var(--text-muted);
+}
+
+/* activity list */
+
+.activity-card {
+  background: var(--bg-card);
+  border-radius: 18px;
+  padding: 16px 18px 18px;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.07);
+}
+
+.activity-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.activity-item {
+  border-radius: 10px;
+  padding: 10px 10px;
+  font-size: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.activity-item.normal {
+  background: rgba(16, 185, 129, 0.07);
+}
+
+.activity-item.warn {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.activity-text {
+  max-width: 80%;
+}
+
+.activity-time {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* misc */
+
+.footer-note {
+  margin-top: 12px;
+  font-size: 10px;
+  text-align: center;
+  color: var(--text-muted);
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-logo">BG</div>
+      <div class="brand-text">
+        <span>Guardian Eye</span>
+        <span>Baby Monitor</span>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="chip">
+        <span class="chip-dot ok"></span>
+        <span>Connected</span>
+      </div>
+      <div class="chip">
+        <span class="chip-dot ok"></span>
+        <span>Protected</span>
+      </div>
+      <div class="chip">
+        Last updated <span id="lastUpdated">--:--:--</span>
+      </div>
+      <button class="toggle-btn" id="themeToggle">
+        <span id="themeIcon">🌙</span>
+        <span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Profile header -->
+  <div class="profile-card">
+    <div class="profile-left">
+      <div class="avatar">BA</div>
+      <div class="baby-info">
+        <span>Baby Abhi</span><br />
+        <span>All vitals being monitored</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vitals row -->
+  <div class="vitals-row">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label">Heart Rate</div>
+        <div class="card-status" id="hrStatus">Normal</div>
+      </div>
+      <div class="card-main">
+        <div class="card-value">
+          <span id="pulseVal">--</span>
+          <span style="font-size:13px;font-weight:500;"> BPM</span>
+        </div>
+        <div class="card-sub">Normal: 80–140 BPM</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label">Temperature</div>
+        <div class="card-status" id="tempStatus">Normal</div>
+      </div>
+      <div class="card-main">
+        <div class="card-value">
+          <span id="tempVal">--</span>
+          <span style="font-size:13px;font-weight:500;"> °C</span>
+        </div>
+        <div class="card-sub">Normal: 36.5–37.5 °C</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label">Diaper Mostiure</div>
+        <div class="card-status" id="moistStatus">Normal</div>
+      </div>
+      <div class="card-main">
+        <div class="card-value">
+          <span id="moistVal">--</span>
+          <span style="font-size:13px;font-weight:500;"> %</span>
+        </div>
+        <div class="card-sub">Diaper surface moisture</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-label">Motion</div>
+        <div class="card-status" id="motionStatus">Normal</div>
+      </div>
+      <div class="card-main">
+        <div class="card-value" id="motionVal">--</div>
+        <div class="card-sub">Movement detection</div>
+      </div>
+    </div>
+  </div>
+
+<!-- Main grid -->
+<div class="main-grid">
+  <div>
+
+    <!-- HR Chart -->
+    <div class="chart-card">
+      <div class="chart-title">Heart Rate Monitor</div>
+      <canvas id="hrChart"></canvas>
+    </div>
+
+    <!-- 📹 Camera Card Full Width -->
+    <div class="card camera-card" onclick="openCameraPage()" style="margin-bottom: 12px;">
+      <div class="summary-label">Camera</div>
+      <div class="summary-value">📷 Live View</div>
+      <div class="summary-sub">Tap to open CCTV stream</div>
+    </div>
+
+    <!-- Summary row (Avg HR + Sleep) -->
+    <div class="summary-row">
+      <!-- Avg Heart Rate -->
+      <div class="card">
+        <div class="summary-label">Avg Heart Rate</div>
+        <div class="summary-value">
+          <span id="avgHr">--</span> BPM
+        </div>
+        <div class="summary-sub">Based on last readings</div>
+      </div>
+
+      <!-- Sleep Duration -->
+      <div class="card">
+        <div class="summary-label">Sleep Duration</div>
+        <div class="summary-value" id="sleepDuration">--</div>
+        <div class="summary-sub">Estimated from motion state</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right column -->
+  <div class="activity-card">
+    <div class="activity-title">Recent Activity</div>
+    <div id="activityList"></div>
+    <div class="footer-note">
+      BabyGuard monitors Baby Abhi 24/7 and alerts you to any changes.
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Firebase (compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+<script>
+// ---------- DARK MODE ----------
+const body = document.body;
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+const themeLabel = document.getElementById("themeLabel");
+
+function applyTheme(mode) {
+  if (mode === "dark") {
+    body.classList.add("dark");
+    themeIcon.textContent = "☀️";
+    themeLabel.textContent = "Light";
+  } else {
+    body.classList.remove("dark");
+    themeIcon.textContent = "🌙";
+    themeLabel.textContent = "Dark";
+  }
+}
+
+let savedTheme = localStorage.getItem("babyTheme") || "light";
+applyTheme(savedTheme);
+
+themeToggle.onclick = () => {
+  savedTheme = savedTheme === "light" ? "dark" : "light";
+  localStorage.setItem("babyTheme", savedTheme);
+  applyTheme(savedTheme);
+};
+
+// ---------- HEART RATE CHART ----------
+const hrCtx = document.getElementById("hrChart").getContext("2d");
+let hrData = [];
+
+const hrChart = new Chart(hrCtx, {
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [{
+      label: "Heart Rate",
+      data: hrData,
+      borderColor: "#f97373",
+      backgroundColor: "rgba(248,113,113,0.12)",
+      borderWidth: 2.5,
+      tension: 0.6,
+      fill: true,
+      pointRadius: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: { display: false },
+      y: { display: false }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: false }
+    },
+    animation: { duration: 250 }
+  }
+});
+
+// ---------- ACTIVITY FEED ----------
+const activityList = document.getElementById("activityList");
+
+function addActivity(text, type = "normal") {
+  const el = document.createElement("div");
+  el.className = "activity-item " + type;
+  el.innerHTML = `
+    <div class="activity-text">${text}</div>
+    <div class="activity-time">${new Date().toLocaleTimeString()}</div>
+  `;
+  activityList.prepend(el);
+  while (activityList.children.length > 6) {
+    activityList.removeChild(activityList.lastChild);
+  }
+}
+
+// ---------- SLEEP ESTIMATION ----------
+const sleepDurationEl = document.getElementById("sleepDuration");
+let sleepMinutes = 0;
+let lastUpdateTime = null;
+let lastMotionState = null;
+
+function updateSleep(motion) {
+  const now = Date.now();
+  if (lastUpdateTime !== null && lastMotionState === 0) {
+    const deltaMin = (now - lastUpdateTime) / 60000; // minutes
+    sleepMinutes += deltaMin;
+  }
+  lastUpdateTime = now;
+  lastMotionState = motion;
+
+  const hrs = Math.floor(sleepMinutes / 60);
+  const mins = Math.floor(sleepMinutes % 60);
+  if (hrs === 0 && mins === 0) {
+    sleepDurationEl.textContent = "--";
+  } else {
+    sleepDurationEl.textContent = `${hrs}h ${mins}m`;
+  }
+}
+
+// ---------- ELEMENT REFERENCES ----------
+const pulseEl = document.getElementById("pulseVal");
+const tempEl = document.getElementById("tempVal");
+const moistEl = document.getElementById("moistVal");
+const motionEl = document.getElementById("motionVal");
+const avgHrEl = document.getElementById("avgHr");
+
+const hrStatusEl = document.getElementById("hrStatus");
+const tempStatusEl = document.getElementById("tempStatus");
+const moistStatusEl = document.getElementById("moistStatus");
+const motionStatusEl = document.getElementById("motionStatus");
+const lastUpdatedSpan = document.getElementById("lastUpdated");
+
+// ---------- FIREBASE CONFIG ----------
+const firebaseConfig = {
+  apiKey: "AIzaSyCBCwIB2xPULO56A0SaOJSddb1h9yWHHHM",
+  authDomain: "sensor-monitor-36af9.firebaseapp.com",
+  databaseURL: "https://sensor-monitor-36af9-default-rtdb.firebaseio.com",
+  projectId: "sensor-monitor-36af9",
+  storageBucket: "sensor-monitor-36af9.firebasestorage.app",
+  messagingSenderId: "572097460334",
+  appId: "1:572097460334:web:379ea2f109718a2335ce7f"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// remember previous values so we only log big changes
+let lastPulse = null;
+let lastTemp = null;
+let lastMoist = null;
+
+// ---------- REALTIME LISTENER ----------
+db.ref("/child").on("value", (snap) => {
+  const data = snap.val();
+  if (!data) return;
+
+  const temp = Number(data.temp || data.temperature || 0);
+  const hum  = Number(data.humidity || 0);  // not shown but available
+  const moist = Number(data.moisture || 0);
+  const pulse = Number(data.pulse || 0);
+  const motion = Number(data.motion || 0);
+  const alarm = !!data.alarm;
+
+  // Update last updated time
+  lastUpdatedSpan.textContent = new Date().toLocaleTimeString();
+
+  // --- Update cards ---
+  if (!isNaN(temp))  tempEl.textContent  = temp.toFixed(1);
+  if (!isNaN(pulse)) pulseEl.textContent = pulse;
+  if (!isNaN(moist)) moistEl.textContent = moist;
+  motionEl.textContent = motion ? "Active 👶" : "Sleeping 😴";
+
+  // Heart rate status
+  if (pulse < 80 || pulse > 140) {
+    hrStatusEl.textContent = "Check";
+    hrStatusEl.style.color = "#ef4444";
+  } else {
+    hrStatusEl.textContent = "Normal";
+    hrStatusEl.style.color = "";
+  }
+
+  // Temperature status
+  if (temp > 37.5) {
+    tempStatusEl.textContent = "Fever";
+    tempStatusEl.style.color = "#ef4444";
+  } else {
+    tempStatusEl.textContent = "Normal";
+    tempStatusEl.style.color = "";
+  }
+
+  // Moisture status
+  if (moist < 25) {
+    moistStatusEl.textContent = "Low";
+    moistStatusEl.style.color = "#ef4444";
+  } else {
+    moistStatusEl.textContent = "Normal";
+    moistStatusEl.style.color = "";
+  }
+
+  // Motion status text
+  motionStatusEl.textContent = motion ? "Awake" : "Sleeping";
+
+  // --- Activity log based on changes ---
+  if (lastPulse !== null && Math.abs(pulse - lastPulse) > 20) {
+    addActivity(`Sudden heart-rate change: ${lastPulse} → ${pulse} BPM`, "warn");
+  }
+  if (lastTemp !== null && temp > 37.5 && lastTemp <= 37.5) {
+    addActivity(`Fever detected at ${temp.toFixed(1)} °C`, "warn");
+  }
+  if (lastMoist !== null && moist < 25 && lastMoist >= 25) {
+    addActivity("Skin / diaper moisture became low", "warn");
+  }
+  if (lastMotionState !== null && motion !== lastMotionState) {
+    addActivity(motion ? "Baby became active 👶" : "Baby seems to be sleeping 😴", "normal");
+  }
+  if (alarm) {
+    addActivity("Alarm active from device (buzzer ON)", "warn");
+  }
+
+  lastPulse = pulse;
+  lastTemp = temp;
+  lastMoist = moist;
+
+  // --- Heart rate chart ---
+  if (!isNaN(pulse) && pulse > 0) {
+    hrData.push(pulse);
+    if (hrData.length > 40) hrData.shift();
+    hrChart.data.labels = hrData.map((_, i) => i);
+    hrChart.update();
+
+    const avg = hrData.reduce((a, b) => a + b, 0) / hrData.length;
+    avgHrEl.textContent = isNaN(avg) ? "--" : avg.toFixed(0);
+  }
+
+  // --- Sleep estimation ---
+  updateSleep(motion);
+});
+
+// Initial info
+addActivity("Dashboard connected to Firebase.", "normal");
+function openCameraPage() {
+  window.location.href = "https://web.ezykam.com/playback"; // 🔗 Replace with your page link
+}
+
+</script>
+</body>
+</html>
